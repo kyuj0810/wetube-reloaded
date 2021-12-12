@@ -28,17 +28,38 @@ export const home = async (req, res) => {
    * callback 은 err와 docs 라는 signature 를 가짐.
    */
 };
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   const { id } = req.params;
-  return res.render("watch", { pageTitle: `Watching` });
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "Video not found." });
+  }
+  return res.render("watch", { pageTitle: video.title, video });
 };
-export const getEdit = (req, res) => {
+
+export const getEdit = async (req, res) => {
   const { id } = req.params;
-  return res.render("edit", { pageTitle: `Editing` });
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "Video not found." });
+  }
+  return res.render("edit", { pageTitle: `Editing ${video.title}`, video });
 };
-export const postEdit = (req, res) => {
+
+export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const { title } = req.body;
+  const { title, description, hashtags } = req.body;
+  const video = await Video.exists({ _id: id });
+  if (!video) {
+    return res.render("404", { pageTitle: "Video not found." });
+  }
+  await Video.findOneAndUpdate(id, {
+    title,
+    description,
+    hashtags: hashtags
+      .split(",")
+      .map((word) => (word.startsWith("#") ? word : `#${word}`)),
+  });
   return res.redirect(`/videos/${id}`);
 };
 
@@ -52,11 +73,9 @@ export const postUpload = async (req, res) => {
     await Video.create({
       title,
       description,
-      hashtags: hashtags.split(",").map((word) => `#${word}`),
-      meta: {
-        views: 0,
-        rating: 0,
-      },
+      hashtags: hashtags
+        .split(",")
+        .map((word) => (word.startsWith("#") ? word : `#${word}`)),
     });
     return res.redirect("/");
   } catch (error) {
