@@ -53,7 +53,6 @@ export const postLogin = async (req, res) => {
     });
   }
 
-  console.log(user.password);
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
     return res.status(400).render("login", {
@@ -151,8 +150,41 @@ export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
 
-export const postEdit = (req, res) => {
-  return res.render("edit-profile");
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req; // = req.session.user.id
+
+  if (
+    req.session.user.email != req.body.email ||
+    req.session.user.username != req.body.username
+  ) {
+    const exists = await User.exists({ $or: [{ username }, { email }] });
+    if (exists) {
+      return res.render("edit-profile", {
+        pageTitle: "Edit Profile",
+        errorMessage: "This username/email is already taken.",
+      });
+    }
+  }
+
+  //const { name, email, username, location } = req.body;
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+
+  req.session.user = updatedUser;
+  return res.redirect("/users/edit");
 };
 
 export const remove = (req, res) => res.send("Remove User");
