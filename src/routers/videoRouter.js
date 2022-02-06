@@ -22,7 +22,11 @@ videoRouter
   .route("/:id([0-9a-f]{24})/delete")
   .all(publicOnlyMiddleware)
   .get(deleteVideo);
-videoRouter.route("/upload").get(getUpload).post(postUpload);
+videoRouter
+  .route("/upload")
+  .all(publicOnlyMiddleware)
+  .get(getUpload)
+  .post(postUpload);
 // videoRouter.get("/:id(\\d+)/edit", getEdit);
 
 export default videoRouter;
