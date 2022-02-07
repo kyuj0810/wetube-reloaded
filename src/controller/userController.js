@@ -153,9 +153,10 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id },
+      user: { _id, avatarUrl },
     },
     body: { name, email, username, location },
+    file,
   } = req; // = req.session.user.id
 
   if (
@@ -171,10 +172,13 @@ export const postEdit = async (req, res) => {
     }
   }
 
+  console.log("session", avatarUrl);
+  console.log("uploadFile", file);
   //const { name, email, username, location } = req.body;
   const updatedUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
       name,
       email,
       username,
@@ -220,7 +224,7 @@ export const postChangePasswor = async (req, res) => {
   }
   user.password = newPassword;
   await user.save();
-  return res.redirect("/users/logout");
+  return res.redirect("/logout");
 };
 
 export const see = (req, res) => res.send("See");
