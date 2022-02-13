@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 import User from "../models/User";
+import Video from "../models/Video";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
-  console.log(req.body);
   const { name, username, email, password, password2, location } = req.body;
   const pageTitle = "Join";
 
@@ -113,8 +113,6 @@ export const finishGithubLogin = async (req, res) => {
       })
     ).json();
 
-    console.log(userData);
-
     const emailObj = emailData.find(
       (email) => email.primary === true && email.verified === true
     );
@@ -172,8 +170,6 @@ export const postEdit = async (req, res) => {
     }
   }
 
-  console.log("session", avatarUrl);
-  console.log("uploadFile", file);
   //const { name, email, username, location } = req.body;
   const updatedUser = await User.findByIdAndUpdate(
     _id,
@@ -227,4 +223,16 @@ export const postChangePasswor = async (req, res) => {
   return res.redirect("/logout");
 };
 
-export const see = (req, res) => res.send("See");
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  const videos = await Video.find({ owner: user._id });
+  return res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+    videos,
+  });
+};
