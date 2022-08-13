@@ -20,6 +20,14 @@ video.volume = volumeValue
 const formatTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substr(14, 5)
 
+//2. 스페이스바를 눌렀을 경우 일시정지 및 재생
+const handlePlayKeyDown = (e) => {
+  // space click시
+  if (e.keyCode == 32) {
+    handlePlayClick()
+  }
+}
+
 const handlePlayClick = (e) => {
   if (video.paused) {
     video.play()
@@ -59,6 +67,11 @@ const handleVolumeChange = (event) => {
 const handleLoadedMetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration))
   timeline.max = Math.floor(video.duration)
+}
+
+//1. 비디오를 클릭했을 때 일시정지 및 재생
+const handleVideoClick = () => {
+  handlePlayClick()
 }
 
 const handelhTimeUpdate = () => {
@@ -103,17 +116,14 @@ const handleMouseLeave = () => {
   controlsTimeOut = setTimeout(hideControls, 3000)
 }
 
+window.addEventListener('keydown', handlePlayKeyDown)
 playBtn.addEventListener('click', handlePlayClick)
 muteBtn.addEventListener('click', handleMuteClick)
 volumeRange.addEventListener('input', handleVolumeChange)
 video.addEventListener('loadeddata', handleLoadedMetadata)
 video.addEventListener('timeupdate', handelhTimeUpdate)
+video.addEventListener('click', handleVideoClick)
 videoContainer.addEventListener('mousemove', handleMouseMove)
 videoContainer.addEventListener('mouseleave', handleMouseLeave)
 timeline.addEventListener('input', handleTimelineChange)
 fullScreenBtn.addEventListener('click', handleFullscreen)
-
-/*
-1. 비디오를 클릭했을 때 일시정지 및 재생
-2. 스페이스바를 눌렀을 경우 일시정지 및 재생 
-*/
