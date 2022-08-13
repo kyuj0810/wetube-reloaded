@@ -116,5 +116,4 @@ fullScreenBtn.addEventListener('click', handleFullscreen)
 /*
 1. 비디오를 클릭했을 때 일시정지 및 재생
 2. 스페이스바를 눌렀을 경우 일시정지 및 재생 
-3. 컨트롤바 있을 때 
 */
