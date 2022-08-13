@@ -20,7 +20,7 @@ video.volume = volumeValue
 const formatTime = (seconds) =>
   new Date(seconds * 1000).toISOString().substr(14, 5)
 
-//2. 스페이스바를 눌렀을 경우 일시정지 및 재생
+// 스페이스바를 눌렀을 경우 일시정지 및 재생
 const handlePlayKeyDown = (e) => {
   // space click시
   if (e.keyCode == 32) {
@@ -69,7 +69,7 @@ const handleLoadedMetadata = () => {
   timeline.max = Math.floor(video.duration)
 }
 
-//1. 비디오를 클릭했을 때 일시정지 및 재생
+// 비디오를 클릭했을 때 일시정지 및 재생
 const handleVideoClick = () => {
   handlePlayClick()
 }
