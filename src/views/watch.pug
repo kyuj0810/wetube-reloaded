@@ -2,7 +2,7 @@ extends base.pug
 
 block content 
     //- h3 #{videos.meta.views } #{videos.meta.views === 1 ? "view" : "views"}
-    div#videoContainer
+    div#videoContainer(data-id=video._id)
         video(src="/" + video.fileUrl)
         div#videoControls.videoControls
             div.videoControls__play
