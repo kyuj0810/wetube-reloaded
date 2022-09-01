@@ -3,8 +3,15 @@ const video = document.getElementById('preview')
 
 let stream
 let recorder
+let videoFile
 
-const handleDownload = () => {}
+const handleDownload = () => {
+  const a = document.createElement('a')
+  a.href = videoFile
+  a.download = 'MyRecording.webm'
+  document.body.appendChild(a)
+  a.click()
+}
 
 const handleStop = () => {
   startBtn.innerText = 'Download Recording'
@@ -18,9 +25,9 @@ const handleStart = () => {
   startBtn.innerText = 'Stop Recording'
   startBtn.removeEventListener('click', handleStart)
   startBtn.addEventListener('click', handleStop)
-  recorder = new MediaRecorder(stream)
+  recorder = new MediaRecorder(stream, { mimeType: 'video/webm' })
   recorder.ondataavailable = (event) => {
-    const videoFile = URL.createObjectURL(event.data) // 파일은 브라우저의 메모리 상에 있음.
+    videoFile = URL.createObjectURL(event.data) // 파일은 브라우저의 메모리 상에 있음.
     video.srcObject = null
     video.src = videoFile
     video.loop = true
