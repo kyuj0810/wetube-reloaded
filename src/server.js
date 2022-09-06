@@ -17,7 +17,11 @@ app.set('view engine', 'pug') // 뷰 엔진 설정
 app.set('views', process.cwd() + '/src/views')
 app.use(logger)
 app.use(express.urlencoded({ extended: true })) // HTML form을 이해하고 그 form을 우리가 사용할 수 있는 javascript object 형식으로 통역해줌.
-
+app.use((req, res, next) => {
+  res.header('Cross-Origin-Embedder-Policy', 'require-corp')
+  res.header('Cross-Origin-Opener-Policy', 'same-origin')
+  next()
+})
 /* 
 session이라는 middleware가 브라우저에 cookie를 전송
  cookie: backend가 너의 브라우저에 주는 정보 
