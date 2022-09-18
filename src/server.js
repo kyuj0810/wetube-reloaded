@@ -1,6 +1,7 @@
 import express from 'express'
 import morgan from 'morgan'
 import session from 'express-session'
+import flash from 'express-flash'
 import MongoStore from 'connect-mongo'
 import rootRouter from './routers/rootRouter'
 import videoRouter from './routers/videoRouter'
@@ -44,6 +45,7 @@ app.use(
 그러면 서버가 그 세션 id를 읽고 우리가 누군지 알 수 있음. 어떤 브라우저인지 
 */
 
+app.use(flash())
 app.use(localsMiddleware)
 app.use('/uploads', express.static('uploads'))
 app.use('/static', express.static('assets'))
