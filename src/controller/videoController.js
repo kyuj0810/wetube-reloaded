@@ -1,5 +1,6 @@
 import User from '../models/User'
 import Video from '../models/Video'
+import Comment from '../models/Comment'
 
 /* callback 형식
 console.log("start")
@@ -148,5 +149,12 @@ export const registerView = async (req, res) => {
   }
   video.meta.views = video.meta.views + 1
   await video.save()
+  return res.sendStatus(200)
+}
+
+export const createComment = (req, res) => {
+  console.log(req.params)
+  console.log(req.body)
+  console.log(req.body.test, req.body.rating)
   return res.sendStatus(200)
 }
