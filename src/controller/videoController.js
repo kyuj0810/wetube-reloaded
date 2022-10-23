@@ -171,5 +171,27 @@ export const createComment = async (req, res) => {
   })
   video.comments.push(comment._id)
   video.save()
+  return res.status(201).json({ newCommentId: comment._id })
+}
+
+export const deleteComment = async (req, res) => {
+  const {
+    session: { user },
+    body: { text },
+    params: { id },
+  } = req
+  const video = await Video.findById(id)
+  if (!video) {
+    return res.sendStatus(404)
+  }
+  const comment = await Comment.findById(id)
+  console.log('deleteComment:', comment._id)
+
+  if (!comment) {
+    return res.status(404).render('404', { pageTitle: 'Comment not found.' })
+  }
+  await Comment.findByIdAndDelete(id)
+  video.comments.pop(comment._id)
+  video.save()
   return res.sendStatus(201)
 }
