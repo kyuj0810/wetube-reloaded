@@ -21,6 +21,7 @@
     "@ffmpeg/ffmpeg": "^0.11.4",
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.6.0",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-flash": "^0.0.2",
@@ -44,6 +45,7 @@
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.11.1"
   }
 }

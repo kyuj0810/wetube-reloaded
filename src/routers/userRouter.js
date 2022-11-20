@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express'
 import {
   getEdit,
   postEdit,
@@ -8,30 +8,30 @@ import {
   getChangePasswor,
   postChangePasswor,
   see,
-} from "../controller/userController";
+} from '../controller/userController'
 import {
   protectorMiddleware,
   publicOnlyMiddleware,
   avatarUpload,
-} from "../middlewares";
+} from '../middlewares'
 
-const userRouter = express.Router();
+const userRouter = express.Router()
 
-userRouter.get("/logout", protectorMiddleware, logout);
+userRouter.get('/logout', protectorMiddleware, logout)
 userRouter
-  .route("/edit")
+  .route('/edit')
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(avatarUpload.single("avatar"), postEdit);
+  .post(avatarUpload.single('avatar'), postEdit)
 userRouter
-  .route("/change-password")
+  .route('/change-password')
   .all(protectorMiddleware)
   .get(getChangePasswor)
-  .post(postChangePasswor);
+  .post(postChangePasswor)
 
-userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
-userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
+userRouter.get('/github/start', publicOnlyMiddleware, startGithubLogin)
+userRouter.get('/github/finish', publicOnlyMiddleware, finishGithubLogin)
 
-userRouter.get("/:id", see);
+userRouter.get('/:id', see)
 
-export default userRouter;
+export default userRouter

@@ -9,6 +9,7 @@ import userRouter from './routers/userRouter'
 import { localsMiddleware } from './middlewares'
 import apiRouter from './routers/apiRouter'
 
+//const cors = require('cors')
 const app = express()
 const logger = morgan('dev')
 
@@ -17,6 +18,7 @@ const logger = morgan('dev')
 app.set('view engine', 'pug') // 뷰 엔진 설정
 app.set('views', process.cwd() + '/src/views')
 app.use(logger)
+//app.use(cors())
 app.use(express.urlencoded({ extended: true })) // HTML form을 이해하고 그 form을 우리가 사용할 수 있는 javascript object 형식으로 통역해줌.
 app.use(express.json())
 app.use((req, res, next) => {
